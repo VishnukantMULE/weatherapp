@@ -1,10 +1,10 @@
-class GeoLocationModel {
+class GeoLocModel {
   List<Results>? results;
   double? generationtimeMs;
 
-  GeoLocationModel({this.results, this.generationtimeMs});
+  GeoLocModel({this.results, this.generationtimeMs});
 
-  GeoLocationModel.fromJson(Map<String, dynamic> json) {
+  GeoLocModel.fromJson(Map<String, dynamic> json) {
     if (json['results'] != null) {
       results = <Results>[];
       json['results'].forEach((v) {
@@ -29,7 +29,7 @@ class Results {
   String? name;
   double? latitude;
   double? longitude;
-  double? elevation; // Changed to double
+  int? elevation;
   String? featureCode;
   String? countryCode;
   int? admin1Id;
@@ -39,7 +39,10 @@ class Results {
   String? country;
   String? admin1;
   int? admin2Id;
+  int? admin3Id;
+  List<String>? postcodes;
   String? admin2;
+  String? admin3;
 
   Results(
       {this.id,
@@ -56,14 +59,17 @@ class Results {
         this.country,
         this.admin1,
         this.admin2Id,
-        this.admin2});
+        this.admin3Id,
+        this.postcodes,
+        this.admin2,
+        this.admin3});
 
   Results.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     latitude = json['latitude'];
     longitude = json['longitude'];
-    elevation = json['elevation']?.toDouble(); // Safely converting to double
+    elevation = json['elevation'];
     featureCode = json['feature_code'];
     countryCode = json['country_code'];
     admin1Id = json['admin1_id'];
@@ -73,7 +79,10 @@ class Results {
     country = json['country'];
     admin1 = json['admin1'];
     admin2Id = json['admin2_id'];
+    admin3Id = json['admin3_id'];
+    postcodes = json['postcodes'].cast<String>();
     admin2 = json['admin2'];
+    admin3 = json['admin3'];
   }
 
   Map<String, dynamic> toJson() {
@@ -92,7 +101,10 @@ class Results {
     data['country'] = this.country;
     data['admin1'] = this.admin1;
     data['admin2_id'] = this.admin2Id;
+    data['admin3_id'] = this.admin3Id;
+    data['postcodes'] = this.postcodes;
     data['admin2'] = this.admin2;
+    data['admin3'] = this.admin3;
     return data;
   }
 }
