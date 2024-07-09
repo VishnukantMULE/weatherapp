@@ -8,8 +8,7 @@ class CityWeatherModel {
     location = json['location'] != null
         ? new Location.fromJson(json['location'])
         : null;
-    current =
-    json['current'] != null ? new Current.fromJson(json['current']) : null;
+    current = json['current'] != null ? new Current.fromJson(json['current']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -72,7 +71,7 @@ class Location {
 class Current {
   int? lastUpdatedEpoch;
   String? lastUpdated;
-  int? tempC;
+  double? tempC;
   double? tempF;
   int? isDay;
   Condition? condition;
@@ -80,13 +79,13 @@ class Current {
   double? windKph;
   int? windDegree;
   String? windDir;
-  int? pressureMb;
+  double? pressureMb;
   double? pressureIn;
   double? precipMm;
   double? precipIn;
   int? humidity;
   int? cloud;
-  int? feelslikeC;
+  double? feelslikeC;
   double? feelslikeF;
   double? windchillC;
   double? windchillF;
@@ -94,10 +93,10 @@ class Current {
   double? heatindexF;
   double? dewpointC;
   double? dewpointF;
-  int? visKm;
-  int? visMiles;
-  int? uv;
-  int? gustMph;
+  double? visKm;
+  double? visMiles;
+  double? uv;
+  double? gustMph;
   double? gustKph;
 
   Current(

@@ -11,7 +11,6 @@ class IpinfoController{
       if(res.statusCode==200)
         {
           IpInfoModel ipInfoModel=IpInfoModel.fromJson(json.decode(res.body));
-          print(res.body);
           return ipInfoModel;
         }
       else
