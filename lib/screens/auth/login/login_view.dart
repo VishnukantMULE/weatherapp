@@ -1,5 +1,6 @@
 // import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:weatherapp/screens/weather/home/weather_home_view.dart';
 
 import '../register/register_view.dart';
 import 'login_controller.dart';
@@ -28,7 +29,7 @@ class _LoginViewState extends State<LoginView> {
 
       appBar: AppBar(
         title: const Center(
-          child: Text("To Do APP"),
+          child: Text("Weather App"),
         ),
 
       ),
@@ -85,6 +86,7 @@ class _LoginViewState extends State<LoginView> {
 
             ElevatedButton(
               onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>WeatherHomeView()));
                 _controller.updateuserId(_useridcontroller.text);
                 _controller.updatePassword(_passwordcontroller.text);
                 if(_controller.validateuser())

@@ -12,9 +12,12 @@ import 'package:weatherapp/service/ipinfo/ipinfo_controller.dart';
 import 'package:weatherapp/service/ipinfo/ipinfo_model.dart';
 import 'package:weatherapp/service/searchcity/searchcity_model.dart';
 import 'package:weatherapp/service/weatherapi/weatherapi_model.dart';
+import 'package:weatherapp/theme/colors.dart';
+import 'package:weatherapp/utils/date_formater.dart';
 import '../../../service/geolocation/geo_location_model.dart';
 import '../../../service/ipgeolocation/ipgeo_loc_model.dart';
 import '../../../service/searchcity/searchcity_controller.dart';
+import '../forecast/forecast_view.dart';
 
 class WeatherHomeView extends StatefulWidget {
   const WeatherHomeView({super.key});
@@ -83,7 +86,7 @@ class _WeatherHomeViewState extends State<WeatherHomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xff29b6f6),
+        backgroundColor:AppColors.blue,
         appBar: isSearch
             ? AppBar(
                 leading: TextButton(
@@ -199,7 +202,7 @@ class _WeatherHomeViewState extends State<WeatherHomeView> {
                                   height: 10,
                                 ),
                                 Text(
-                                  "Today ${cityWeatherModel.location?.localtime.toString()}",
+                                  "Today ${DateFormater().DateFormaterfunction(cityWeatherModel.location!.localtime.toString())}",
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
@@ -269,7 +272,9 @@ class _WeatherHomeViewState extends State<WeatherHomeView> {
                       ),
                       SizedBox(height: 25,),
                       Center(
-                        child: ElevatedButton(onPressed: (){},
+                        child: ElevatedButton(onPressed: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>ForecastView(cityname: ipIGeoLocModel.city.toString(),)));
+                        },
                             style: ElevatedButton.styleFrom(
                                 fixedSize: Size(190, 45),
                                 shape: RoundedRectangleBorder(
@@ -293,3 +298,6 @@ class _WeatherHomeViewState extends State<WeatherHomeView> {
     );
   }
 }
+// at_ePnrppRtEldAWsZHGSJwp0WdZSeWJ
+//
+// 2f058980b09849ac9e9b15b9b744575e
