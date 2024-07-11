@@ -21,7 +21,6 @@ class _LoginViewState extends State<LoginView> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    LoginController _controller;
   }
   @override
   Widget build(BuildContext context) {
@@ -86,17 +85,17 @@ class _LoginViewState extends State<LoginView> {
 
             ElevatedButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>WeatherHomeView()));
-                _controller.updateuserId(_useridcontroller.text);
-                _controller.updatePassword(_passwordcontroller.text);
-                if(_controller.validateuser())
-                {
-
-                }
-                else
-                {
-
-                }
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>const WeatherHomeView()));
+                // _controller.updateuserId(_useridcontroller.text);
+                // _controller.updatePassword(_passwordcontroller.text);
+                // if(_controller.validateuser())
+                // {
+                //
+                // }
+                // else
+                // {
+                //
+                // }
               },
               child: Text(
                 "Login",

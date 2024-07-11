@@ -29,6 +29,7 @@ class WeatherHomeView extends StatefulWidget {
 class _WeatherHomeViewState extends State<WeatherHomeView> {
   bool isSearch = false;
   bool isready = false;
+  late String searchedcity="";
   // String searchquery='';
 
   TextEditingController searchcontroller = TextEditingController();
@@ -53,7 +54,7 @@ class _WeatherHomeViewState extends State<WeatherHomeView> {
   _getcurrentlocweather() {
     isready = true;
     IpinfoController().getIpInfo().then((val) {
-      if (val != null && val is IpInfoModel) {
+      if (val != null) {
         ipInfoModelr.ip = val.ip ?? 'Unknown Ip';
         print("Ip get");
         IpgeoLocController()
@@ -61,7 +62,8 @@ class _WeatherHomeViewState extends State<WeatherHomeView> {
             .then((data) {
           ipIGeoLocModel = data!;
           print("City Get ${ipIGeoLocModel.city}");
-          String city = ipIGeoLocModel.city.toString();
+           // searchedcity = ipIGeoLocModel.city.toString();
+           String city=searchedcity==""?ipIGeoLocModel.city.toString():searchedcity;
           GetcityweatherController().getCityWeather(city).then((wdata) {
             cityWeatherModel = wdata!;
             print(
@@ -83,89 +85,115 @@ class _WeatherHomeViewState extends State<WeatherHomeView> {
     super.initState();
   }
 
+
+  void setNewCity(String city)
+  {
+    setState(() {
+      searchedcity=city;
+      _getcurrentlocweather();
+      isSearch=false;
+    });
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor:AppColors.blue,
-        appBar: isSearch
-            ? AppBar(
-                leading: TextButton(
-                  child: Icon(Icons.arrow_back_sharp),
+      backgroundColor: AppColors.blue,
+      appBar: isSearch
+          ? AppBar(
+              leading: TextButton(
+                child: Icon(Icons.arrow_back_sharp),
+                onPressed: () {
+                  setState(() {
+                    isSearch = false;
+                  });
+                },
+              ),
+              backgroundColor: Colors.blue,
+              title: TextField(
+                controller: searchcontroller,
+                onChanged: _getSearchResult(searchcontroller.text),
+                decoration: const InputDecoration(
+                  hintText: 'Search...',
+                  border: InputBorder.none,
+                  hintStyle: TextStyle(color: Colors.white),
+                ),
+                style: const TextStyle(color: Colors.white, fontSize: 18),
+              ),
+              actions: <Widget>[
+                TextButton(
                   onPressed: () {
-                    setState(() {
-                      isSearch = false;
-                    });
+                    _getSearchResult(searchcontroller.text);
                   },
-                ),
-                backgroundColor: Colors.blue,
-                title: TextField(
-                  controller: searchcontroller,
-                  onChanged: _getSearchResult(searchcontroller.text),
-                  decoration: const InputDecoration(
-                    hintText: 'Search...',
-                    border: InputBorder.none,
-                    hintStyle: TextStyle(color: Colors.white),
+                  child: Icon(
+                    Icons.search,
+                    size: 35,
+                    color: Colors.white,
                   ),
-                  style: const TextStyle(color: Colors.white, fontSize: 18),
-                ),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      _getSearchResult(searchcontroller.text);
-                    },
-                    child: Icon(
-                      Icons.search,
-                      size: 35,
-                      color: Colors.white,
-                    ),
-                  )
-                ],
-              )
-            : AppBar(
-                backgroundColor: Color(0xff29b6f6),
-                leading: Icon(
-                  MdiIcons.mapMarker,
-                  size: 35,
-                  color: Colors.white,
-                ),
-                title: Row(
-                  children: [
-                    Text(
-                      ipIGeoLocModel.city.toString(),
-                      style: TextStyle(
-                          fontWeight: FontWeight.w800, color: Colors.white),
-                    ),
-                  ],
-                ),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      setState(() {
-                        isSearch = true;
-                      });
-                    },
-                    child: Icon(
-                      Icons.search,
-                      size: 35,
-                      color: Colors.white,
-                    ),
-                  )
+                )
+              ],
+            )
+          : AppBar(
+
+              backgroundColor: AppColors.bluetransparent,
+              leading: Icon(
+                MdiIcons.mapMarker,
+                size: 35,
+                color: Colors.white,
+              ),
+              title: Row(
+                children: [
+                  Text(
+                    cityWeatherModel.location!.name.toString(),
+                    style: TextStyle(
+                        fontWeight: FontWeight.w800, color: Colors.white),
+                  ),
                 ],
               ),
-        body: isready == true
-            ? Center(
-                child: CircularProgressIndicator(),
-              )
-            : isSearch
-                ? ListView.builder(
-                    itemCount: resultlist.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(resultlist[index].region.toString()),
-                      );
-                    },
-                  )
-                : ListView(
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      isSearch = true;
+                    });
+                  },
+                  child: Icon(
+                    Icons.search,
+                    size: 35,
+                    color: Colors.white,
+                  ),
+                )
+              ],
+            ),
+      body: isready == true
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : isSearch
+              ? ListView.builder(
+                  itemCount: resultlist.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: TextButton(onPressed: () {
+                        setNewCity(resultlist[index].region.toString());
+                        },
+                      child: Text(resultlist[index].region.toString())),
+                    );
+                  },
+                )
+              : Container(
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [Colors.blue, AppColors.bluetransparent],
+                      begin: Alignment.bottomLeft,
+                      end: Alignment.topRight,
+                      stops: [0.4, 0.7],
+                      tileMode: TileMode.repeated,
+                    ),
+                  ),
+                  child: ListView(
                     children: [
                       SizedBox(
                         height: 50,
@@ -267,34 +295,39 @@ class _WeatherHomeViewState extends State<WeatherHomeView> {
                               ],
                             ),
                           ),
-
                         ),
                       ),
-                      SizedBox(height: 25,),
+                      SizedBox(
+                        height: 25,
+                      ),
                       Center(
-                        child: ElevatedButton(onPressed: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>ForecastView(cityname: ipIGeoLocModel.city.toString(),)));
-                        },
-                            style: ElevatedButton.styleFrom(
-                                fixedSize: Size(190, 45),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(
-                                      8,
-                                    ))),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ForecastView(
+                                          cityname:
+                                              cityWeatherModel.location!.name.toString(),
+                                        )));
+                          },
+                          style: ElevatedButton.styleFrom(
+                              fixedSize: Size(190, 45),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                8,
+                              ))),
                           child: Row(
-                          children: [
-                            Text("Forecast Report   "),
-
-                            Icon(MdiIcons.menuUp)
-
-                          ],
-                        ),
+                            children: [
+                              Text("Forecast Report   "),
+                              Icon(MdiIcons.menuUp)
+                            ],
+                          ),
                         ),
                       )
                     ],
-          
                   ),
-      
+                ),
     );
   }
 }
