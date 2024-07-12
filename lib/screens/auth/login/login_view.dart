@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:weatherapp/screens/weather/home/weather_home_view.dart';
 
 import '../register/register_view.dart';
-import 'login_controller.dart';
 
 
 class LoginView extends StatefulWidget {

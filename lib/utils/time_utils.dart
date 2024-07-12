@@ -1,5 +1,4 @@
 import 'package:intl/intl.dart';
-import 'package:weatherapp/utils/date_formater.dart';
 
 class TimeUtils{
 

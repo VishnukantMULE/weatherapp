@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import 'package:weatherapp/theme/colors.dart';
@@ -22,15 +21,13 @@ class WeatherHomeView extends StatefulWidget {
 class _WeatherHomeViewState extends State<WeatherHomeView> {
   bool isSearch = false;
   bool isready = false;
-  late String searchedcity="";
+  late String searchedcity = "";
 
   TextEditingController searchcontroller = TextEditingController();
-
 
   IpInfoModel ipInfoModelr = IpInfoModel();
   IpIGeoLocModel ipIGeoLocModel = IpIGeoLocModel();
   CityWeatherModel cityWeatherModel = CityWeatherModel();
-
   WeatherModel weatherModel = WeatherModel();
 
   List<SearchCityModel> resultlist = [];
@@ -48,21 +45,16 @@ class _WeatherHomeViewState extends State<WeatherHomeView> {
     ApiServices().getIpInfo().then((val) {
       if (val != null) {
         ipInfoModelr.ip = val.ip ?? 'Unknown Ip';
-        ApiServices()
-            .getIPGeoLocation(ipInfoModelr.ip.toString())
-            .then((data) {
+        ApiServices().getIPGeoLocation(ipInfoModelr.ip.toString()).then((data) {
           ipIGeoLocModel = data!;
-          print("City Get ${ipIGeoLocModel.city}");
-           String city=searchedcity==""?ipIGeoLocModel.city.toString():searchedcity;
+          String city = searchedcity == ""
+              ? ipIGeoLocModel.city.toString()
+              : searchedcity;
           ApiServices().getCityWeather(city).then((wdata) {
             cityWeatherModel = wdata!;
-            print(
-                "city weather is ${cityWeatherModel.current?.tempC.toString()}");
             setState(() {});
           });
         });
-      } else {
-        print("Failed ");
       }
       isready = false;
     });
@@ -75,17 +67,13 @@ class _WeatherHomeViewState extends State<WeatherHomeView> {
     super.initState();
   }
 
-
-  void setNewCity(String city)
-  {
+  void setNewCity(String city) {
     setState(() {
-      searchedcity=city;
+      searchedcity = city;
       _getcurrentlocweather();
-      isSearch=false;
+      isSearch = false;
     });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +82,7 @@ class _WeatherHomeViewState extends State<WeatherHomeView> {
       appBar: isSearch
           ? AppBar(
               leading: TextButton(
-                child: Icon(Icons.arrow_back_sharp),
+                child: const Icon(Icons.arrow_back_sharp),
                 onPressed: () {
                   setState(() {
                     isSearch = false;
@@ -117,7 +105,7 @@ class _WeatherHomeViewState extends State<WeatherHomeView> {
                   onPressed: () {
                     _getSearchResult(searchcontroller.text);
                   },
-                  child: Icon(
+                  child: const Icon(
                     Icons.search,
                     size: 35,
                     color: Colors.white,
@@ -126,21 +114,29 @@ class _WeatherHomeViewState extends State<WeatherHomeView> {
               ],
             )
           : AppBar(
-
               backgroundColor: AppColors.bluetransparent,
               leading: Icon(
                 MdiIcons.mapMarker,
-                size: 35,
+                size: 30,
                 color: Colors.white,
               ),
-              title: Row(
-                children: [
-                  Text(
-                    cityWeatherModel.location!.name.toString(),
-                    style: TextStyle(
-                        fontWeight: FontWeight.w800, color: Colors.white),
-                  ),
-                ],
+              title: InkWell(
+                onTap: (){
+                  setState(() {
+                    isSearch=true;
+                  });
+                },
+                child: Row(
+                  children: [
+                    Text(
+                      cityWeatherModel.location!.name.toString(),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white),
+                    ),
+                    SizedBox(width: 10,),
+                    Icon(Icons.arrow_drop_down_sharp,size: 40,color: Colors.white,)
+                  ],
+                ),
               ),
               actions: <Widget>[
                 TextButton(
@@ -149,7 +145,7 @@ class _WeatherHomeViewState extends State<WeatherHomeView> {
                       isSearch = true;
                     });
                   },
-                  child: Icon(
+                  child: const Icon(
                     Icons.search,
                     size: 35,
                     color: Colors.white,
@@ -158,7 +154,7 @@ class _WeatherHomeViewState extends State<WeatherHomeView> {
               ],
             ),
       body: isready == true
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : isSearch
@@ -166,16 +162,17 @@ class _WeatherHomeViewState extends State<WeatherHomeView> {
                   itemCount: resultlist.length,
                   itemBuilder: (context, index) {
                     return ListTile(
-                      title: TextButton(onPressed: () {
-                        setNewCity(resultlist[index].region.toString());
-                        },
-                      child: Text(resultlist[index].region.toString())),
+                      title: TextButton(
+                          onPressed: () {
+                            setNewCity(resultlist[index].region.toString());
+                          },
+                          child: Text(resultlist[index].region.toString())),
                     );
                   },
                 )
               : Container(
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
                       colors: [Colors.blue, AppColors.bluetransparent],
                       begin: Alignment.bottomLeft,
                       end: Alignment.topRight,
@@ -185,7 +182,7 @@ class _WeatherHomeViewState extends State<WeatherHomeView> {
                   ),
                   child: ListView(
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         height: 50,
                       ),
                       Image.network(
@@ -201,85 +198,86 @@ class _WeatherHomeViewState extends State<WeatherHomeView> {
                           child: Container(
                             // height: 400,
                             decoration: BoxDecoration(
-                                color: Colors.white,
+                                // color: Colors.white,
                                 border:
-                                    Border.all(color: Colors.white, width: 5),
-                                borderRadius: BorderRadius.circular(30),
+                                    Border.all(color: Colors.white, width: 2),
+                                borderRadius: BorderRadius.circular(20),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.black.withOpacity(0.5),
-                                    spreadRadius: 5,
-                                    blurRadius: 7,
-                                    offset: Offset(
-                                        0, 3), // changes position of shadow
+                                    color: Colors.white.withOpacity(0.5),
+                                    spreadRadius: 4,
+                                    blurRadius: 5,
+                                    offset: const Offset(
+                                        0, 5), // changes position of shadow
                                   ),
                                 ]),
                             child: Column(
                               children: [
-                                SizedBox(
-                                  height: 10,
+                                const SizedBox(
+                                  height: 20,
                                 ),
                                 Text(
                                   "Today ${DateFormater().DateFormaterfunction(cityWeatherModel.location!.localtime.toString())}",
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.blue,
+                                    color: Colors.black,
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 Text(
                                   "${cityWeatherModel.current!.tempC!.toInt().toString()}\u00B0",
-                                  style: TextStyle(fontSize: 80),
+                                  style: const TextStyle(
+                                      fontSize: 80, color: Colors.black),
                                 ),
                                 Text(
                                   cityWeatherModel.current!.condition!.text
                                       .toString(),
-                                  style: TextStyle(fontSize: 22),
+                                  style: const TextStyle(fontSize: 22),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 30,
                                 ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Icon(Icons.wind_power),
-                                    SizedBox(
+                                    const Icon(Icons.wind_power),
+                                    const SizedBox(
                                       width: 20,
                                     ),
-                                    Text(
+                                    const Text(
                                       "Wind     |  ",
                                       style: TextStyle(fontSize: 18),
                                     ),
                                     Text(
                                       "${cityWeatherModel.current?.windKph.toString()} Km/h",
-                                      style: TextStyle(fontSize: 15),
+                                      style: const TextStyle(fontSize: 15),
                                     )
                                   ],
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 20,
                                 ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Icon(Icons.water_drop),
-                                    SizedBox(
+                                    const Icon(Icons.water_drop),
+                                    const SizedBox(
                                       width: 2,
                                     ),
-                                    Text(
+                                    const Text(
                                       "Hum        |          ",
                                       style: TextStyle(fontSize: 18),
                                     ),
                                     Text(
                                       "${cityWeatherModel.current?.humidity.toString()} %",
-                                      style: TextStyle(fontSize: 15),
+                                      style: const TextStyle(fontSize: 15),
                                     )
                                   ],
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 50,
                                 )
                               ],
@@ -287,7 +285,7 @@ class _WeatherHomeViewState extends State<WeatherHomeView> {
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 25,
                       ),
                       Center(
@@ -297,20 +295,31 @@ class _WeatherHomeViewState extends State<WeatherHomeView> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => ForecastView(
-                                          cityname:
-                                              cityWeatherModel.location!.name.toString(),
+                                          cityname: cityWeatherModel
+                                              .location!.name
+                                              .toString(),
                                         )));
                           },
                           style: ElevatedButton.styleFrom(
-                              fixedSize: Size(190, 45),
+
+                              backgroundColor: Colors.blue,
+                              side: const BorderSide(
+                                color: Colors.white60,
+                                width: 2
+                              ),
+                              fixedSize: const Size(190, 45),
                               shape: RoundedRectangleBorder(
+
                                   borderRadius: BorderRadius.circular(
                                 8,
-                              ))),
+
+                              )
+                              )
+                          ),
                           child: Row(
                             children: [
-                              Text("Forecast Report   "),
-                              Icon(MdiIcons.menuUp)
+                              const Text("Forecast Report   ",style: TextStyle(color: Colors.white),),
+                              Icon(MdiIcons.menuUp,color: Colors.white,)
                             ],
                           ),
                         ),
