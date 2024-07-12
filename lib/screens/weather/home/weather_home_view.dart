@@ -1,22 +1,15 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:weatherapp/service/geolocation/geo_location_controller.dart';
-import 'package:weatherapp/service/getcityweather/getcityweather_controller.dart';
-import 'package:weatherapp/service/getcityweather/getcityweather_model.dart';
-import 'package:weatherapp/service/ipgeolocation/ipgeo_loc_controller.dart';
-import 'package:weatherapp/service/ipinfo/ipinfo_controller.dart';
-import 'package:weatherapp/service/ipinfo/ipinfo_model.dart';
-import 'package:weatherapp/service/searchcity/searchcity_model.dart';
-import 'package:weatherapp/service/weatherapi/weatherapi_model.dart';
+
 import 'package:weatherapp/theme/colors.dart';
 import 'package:weatherapp/utils/date_formater.dart';
-import '../../../service/geolocation/geo_location_model.dart';
-import '../../../service/ipgeolocation/ipgeo_loc_model.dart';
-import '../../../service/searchcity/searchcity_controller.dart';
+import '../../../models/get_city_weather.dart';
+import '../../../models/get_ip_geolocation.dart';
+import '../../../models/get_search_city.dart';
+import '../../../models/get_tip.dart';
+import '../../../models/get_weather.dart';
+import '../../../service/api_services.dart';
 import '../forecast/forecast_view.dart';
 
 class WeatherHomeView extends StatefulWidget {
@@ -30,21 +23,20 @@ class _WeatherHomeViewState extends State<WeatherHomeView> {
   bool isSearch = false;
   bool isready = false;
   late String searchedcity="";
-  // String searchquery='';
 
   TextEditingController searchcontroller = TextEditingController();
 
-  // SearchCityModel searchresult=SearchCityModel();
+
   IpInfoModel ipInfoModelr = IpInfoModel();
   IpIGeoLocModel ipIGeoLocModel = IpIGeoLocModel();
   CityWeatherModel cityWeatherModel = CityWeatherModel();
-  GeoLocModel geoLocModel = GeoLocModel();
+
   WeatherModel weatherModel = WeatherModel();
 
   List<SearchCityModel> resultlist = [];
 
   _getSearchResult(String searchquery) {
-    SearchcityController().searchCity(searchquery).then((searchval) {
+    ApiServices().searchCity(searchquery).then((searchval) {
       setState(() {
         resultlist = searchval!;
       });
@@ -53,18 +45,16 @@ class _WeatherHomeViewState extends State<WeatherHomeView> {
 
   _getcurrentlocweather() {
     isready = true;
-    IpinfoController().getIpInfo().then((val) {
+    ApiServices().getIpInfo().then((val) {
       if (val != null) {
         ipInfoModelr.ip = val.ip ?? 'Unknown Ip';
-        print("Ip get");
-        IpgeoLocController()
+        ApiServices()
             .getIPGeoLocation(ipInfoModelr.ip.toString())
             .then((data) {
           ipIGeoLocModel = data!;
           print("City Get ${ipIGeoLocModel.city}");
-           // searchedcity = ipIGeoLocModel.city.toString();
            String city=searchedcity==""?ipIGeoLocModel.city.toString():searchedcity;
-          GetcityweatherController().getCityWeather(city).then((wdata) {
+          ApiServices().getCityWeather(city).then((wdata) {
             cityWeatherModel = wdata!;
             print(
                 "city weather is ${cityWeatherModel.current?.tempC.toString()}");

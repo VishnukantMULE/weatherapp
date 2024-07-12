@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:weatherapp/service/forecast/forecastapi_controller.dart';
+
 import 'package:weatherapp/theme/colors.dart';
 import 'package:weatherapp/utils/date_formater.dart';
+import 'package:weatherapp/utils/time_utils.dart';
+
+import '../../../service/api_services.dart';
 
 class ForecastView extends StatefulWidget {
   final String cityname;
@@ -21,7 +24,7 @@ class _ForecastViewState extends State<ForecastView> {
   List<dynamic> hourlyData = [];
 
   Future<void> _getForecast() async {
-    ForecastController forecastController = ForecastController();
+    ApiServices forecastController = ApiServices();
     String currentdate = await DateFormater().CurrentDate();
     String lastweekdate = await DateFormater().lastWeekDate();
 
@@ -76,6 +79,10 @@ class _ForecastViewState extends State<ForecastView> {
     });
   }
 
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,6 +114,7 @@ class _ForecastViewState extends State<ForecastView> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
+
                 height: 180,
                 child: forecastData == null
                     ? const Center(
@@ -118,7 +126,8 @@ class _ForecastViewState extends State<ForecastView> {
                         scrollDirection: Axis.horizontal,
                         itemCount: hourlyData.length,
                         itemBuilder: (context, index) {
-                          return SizedBox(
+                          return Container(
+
                             width: 100,
                             child: Card(
                               child: Padding(
@@ -128,6 +137,7 @@ class _ForecastViewState extends State<ForecastView> {
                                   children: [
                                     Text(
                                         "${hourlyData[index]["temp_c"].toString()} \u2103"),
+                             
 
                                     Image.network(
                                       "https:${hourlyData[index]["condition"]["icon"]}",
@@ -135,6 +145,7 @@ class _ForecastViewState extends State<ForecastView> {
                                     // Text(hourlyData[index]["time"]),
                                     Text(DateFormater().getTimeAMPM(
                                         hourlyData[index]["time"])),
+                                    Text(TimeUtils().currentTime())
                                   ],
                                 ),
                               ),
@@ -142,9 +153,9 @@ class _ForecastViewState extends State<ForecastView> {
                           );
                         })),
           ),
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: const Row(
+          const Padding(
+            padding: EdgeInsets.all(15.0),
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [Text("Next and Current " ,style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.white),
               ),
@@ -158,6 +169,9 @@ class _ForecastViewState extends State<ForecastView> {
               height: 400,
               width: MediaQuery.of(context).size.width,
               child: Scrollbar(
+                thickness: 5,
+                radius: const Radius.circular(20),
+
                 child: forecastData == null
                     ? const Center(
                         child: SizedBox(
@@ -175,7 +189,21 @@ class _ForecastViewState extends State<ForecastView> {
                             },
                             child: Container(
                                 // color: AppColors.whitetransparent,
-                                decoration: BoxDecoration(
+                                decoration: index==hrindex?BoxDecoration(
+                                  // color: Colors.black,
+                                  border: Border.all(color: Colors.white70,width: 2,),
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.blue,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.white.withOpacity(0.7),
+                                      spreadRadius: 5,
+                                      blurRadius: 7,
+                                      offset: Offset(0, 3), // changes position of shadow
+                                    ),
+                                  ],
+
+                                ):BoxDecoration(
                                   color: Colors.transparent,
                                 ),
                                 child: Row(

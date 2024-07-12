@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weatherapp/screens/auth/login/login_view.dart';
-import 'package:weatherapp/screens/test/view/postview.dart';
+
 import 'package:weatherapp/screens/weather/home/weather_home_view.dart';
 import 'package:weatherapp/screens/weather/search/search_weather_view.dart';
 import 'package:weatherapp/screens/weather/search/search_weather_controller.dart';

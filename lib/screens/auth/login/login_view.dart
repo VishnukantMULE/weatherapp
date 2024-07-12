@@ -16,7 +16,7 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   final TextEditingController _useridcontroller = TextEditingController();
   final TextEditingController _passwordcontroller = TextEditingController();
-  late final LoginController _controller;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -47,7 +47,7 @@ class _LoginViewState extends State<LoginView> {
               height: 40,
             ),
             TextField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 hintText: "Enter User Id",
               ),
