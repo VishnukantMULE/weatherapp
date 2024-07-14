@@ -126,7 +126,7 @@ class _ForecastViewState extends State<ForecastView> {
                               decoration:  BoxDecoration(
                                 // color: Colors.black,
                                 border: Border.all(
-                                  color: Colors.white38,
+                                  color: Colors.white70,
                                   width: 2,
                                 ),
                                 borderRadius: BorderRadius.circular(10),
@@ -154,8 +154,15 @@ class _ForecastViewState extends State<ForecastView> {
 
                                     ),),
 
-                                    Image.network(
-                                      "https:${hourlyData[index]["condition"]["icon"]}",
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white38,
+                                        border: Border.all(color: Colors.white30,),
+                                        borderRadius: BorderRadius.circular(10)
+                                      ),
+                                      child: Image.network(
+                                        "https:${hourlyData[index]["condition"]["icon"]}",
+                                      ),
                                     ),
                                     // Text(hourlyData[index]["time"]),
                                     Text(DateFormater().getTimeAMPM(
@@ -254,8 +261,18 @@ class _ForecastViewState extends State<ForecastView> {
                                           fontSize: 18,
                                           fontWeight: FontWeight.w500),
                                     ),
-                                    Image.network(
-                                      "https:${completeData[index]["day"]["condition"]["icon"]}",
+                                    Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            color: Colors.white30,
+                                            border: Border.all(color: Colors.white30,),
+                                            borderRadius: BorderRadius.circular(10)
+                                        ),
+                                        child: Image.network(
+                                          "https:${completeData[index]["day"]["condition"]["icon"]}",
+                                        ),
+                                      ),
                                     ),
                                     Text(
                                         " ${completeData[index]["day"]["avgtemp_c"].toString()} \u00B0",
