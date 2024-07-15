@@ -40,4 +40,13 @@ class DateFormater {
 
     return formattedTime;
   }
+
+  String DateTimeNow(){
+
+    DateTime now = new DateTime.now();
+    String dateis = DateFormat("yyyy-MM-dd HH;mm").format(now);
+    // String dateis= DateFormat("yyyy-MM-dd").format(now);
+    return dateis;
+
+  }
 }

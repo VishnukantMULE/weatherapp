@@ -1,55 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:weatherapp/screens/weather/forecast/forecast_view.dart';
 import 'package:weatherapp/screens/weather/home/weather_home_controller.dart';
+import 'package:weatherapp/screens/weather/search/citysearch_view.dart';
 import 'package:weatherapp/theme/colors.dart';
 import 'package:weatherapp/utils/date_formater.dart';
-import '../forecast/forecast_view.dart';
+
 
 
 class WeatherHomeView extends StatelessWidget {
-  const WeatherHomeView({super.key});
+
+  final String cityName;
+  const WeatherHomeView({super.key,required this.cityName});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => WeatherController(),
+      create: (context) => WeatherController(cityName),
       child: Consumer<WeatherController>(
         builder: (context, controller, child) {
           return Scaffold(
             backgroundColor: AppColors.blue,
-            appBar: controller.isSearch
-                ? AppBar(
-              leading: TextButton(
-                child: const Icon(Icons.arrow_back_sharp),
-                onPressed: () {
-                  controller.toggleSearch();
-                },
-              ),
-              backgroundColor: Colors.blue,
-              title: TextField(
-                controller: controller.searchController,
-                onChanged: controller.getSearchResult,
-                decoration: const InputDecoration(
-                  hintText: 'Search...',
-                  border: InputBorder.none,
-                  hintStyle: TextStyle(color: Colors.white),
-                ),
-                style: const TextStyle(color: Colors.white, fontSize: 18),
-              ),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    controller.getSearchResult(controller.searchController.text);
-                  },
-                  child: const Icon(
-                    Icons.search,
-                    size: 35,
-                    color: Colors.white,
-                  ),
-                )
-              ],
-            )
-                : AppBar(
+            appBar: AppBar(
               backgroundColor: AppColors.bluetransparent,
               leading: const Icon(
                 Icons.pin_drop,
@@ -57,7 +29,7 @@ class WeatherHomeView extends StatelessWidget {
                 color: Colors.white,
               ),
               title: InkWell(
-                onTap: controller.toggleSearch,
+
                 child: Row(
                   children: [
                     Text(
@@ -72,7 +44,9 @@ class WeatherHomeView extends StatelessWidget {
               ),
               actions: <Widget>[
                 TextButton(
-                  onPressed: controller.toggleSearch,
+                  onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>CitysearchView()));
+                  },
                   child: const Icon(
                     Icons.search,
                     size: 35,
@@ -84,21 +58,7 @@ class WeatherHomeView extends StatelessWidget {
             body: controller.isReady
                 ? const Center(
               child: CircularProgressIndicator(),
-            )
-                : controller.isSearch
-                ? ListView.builder(
-              itemCount: controller.resultList.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: TextButton(
-                      onPressed: () {
-                        controller.setNewCity(controller.resultList[index].region.toString());
-                      },
-                      child: Text(controller.resultList[index].region.toString())),
-                );
-              },
-            )
-                : Container(
+            ):Container(
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   colors: [Colors.blue, AppColors.bluetransparent],
@@ -214,8 +174,8 @@ class WeatherHomeView extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           )),
-                      child: Row(
-                        children: const [
+                      child: const Row(
+                        children: [
                           Text("Forecast Report   ", style: TextStyle(color: Colors.white)),
                           Icon(Icons.arrow_drop_up, color: Colors.white),
                         ],

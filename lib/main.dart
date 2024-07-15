@@ -4,7 +4,7 @@ import 'package:weatherapp/screens/auth/login/login_view.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 
-void main() {
+void main() async {
   runApp(const MyApp());
 }
 

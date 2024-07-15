@@ -1,6 +1,7 @@
 // import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:weatherapp/screens/weather/home/weather_home_view.dart';
+import 'package:weatherapp/service/db_service/db_service.dart';
 
 import '../register/register_view.dart';
 
@@ -84,7 +85,10 @@ class _LoginViewState extends State<LoginView> {
 
             ElevatedButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>const WeatherHomeView()));
+
+                DbService();
+
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>const WeatherHomeView(cityName: '',)));
                 // _controller.updateuserId(_useridcontroller.text);
                 // _controller.updatePassword(_passwordcontroller.text);
                 // if(_controller.validateuser())

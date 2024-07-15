@@ -1,10 +1,11 @@
 import 'dart:convert';
 
-import '../models/get_city_weather.dart';
-import '../models/get_ip_geolocation.dart';
-import '../models/get_search_city.dart';
-import '../models/get_tip.dart';
+
 import 'package:http/http.dart' as http;
+import 'package:weatherapp/models/get_city_weather.dart';
+import 'package:weatherapp/models/get_ip_geolocation.dart';
+import 'package:weatherapp/models/get_search_city.dart';
+import 'package:weatherapp/models/get_tip.dart';
 
 
 
@@ -15,13 +16,11 @@ class ApiServices {
       if (res.statusCode == 200) {
         IpInfoModel ipInfoModel = IpInfoModel.fromJson(json.decode(res.body));
         return ipInfoModel;
-      } else {
-        print("Ip response failed");
       }
     } catch (e) {
       print(e.toString());
     }
-    print("Failed Evrything");
+
     return null;
   }
 
@@ -124,9 +123,7 @@ class ApiServices {
       {
         return json.decode(res.body);
       }
-      else{
-        print("i  am in else");
-      }
+
     }
     catch(e)
     {
