@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:weatherapp/screens/weather/home/weather_home_controller.dart';
 import 'package:weatherapp/theme/colors.dart';

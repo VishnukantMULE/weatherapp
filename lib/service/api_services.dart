@@ -6,7 +6,7 @@ import '../models/get_search_city.dart';
 import '../models/get_tip.dart';
 import 'package:http/http.dart' as http;
 
-import '../models/get_weather.dart';
+
 
 class ApiServices {
   Future<IpInfoModel?> getIpInfo() async {
@@ -45,27 +45,27 @@ class ApiServices {
     }
     return null;
   }
-
-
-  Future<WeatherModel?>? getcurrentWeather(
-      String latitude, String longitude) async {
-    try {
-      var res = await http.get(Uri.parse(
-          "https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=70ae403dedd8f258ee457633ea3cfa6a"));
-      if (res.statusCode == 200) {
-        WeatherModel weatherModel=WeatherModel.fromJson(json.decode(res.body));
-        return weatherModel;
-
-      }
-      else
-      {
-        print("Failed .....");
-      }
-    } catch (e) {
-      print(e.toString());
-    }
-    return null;
-  }
+  //
+  //
+  // Future<WeatherModel?>? getcurrentWeather(
+  //     String latitude, String longitude) async {
+  //   try {
+  //     var res = await http.get(Uri.parse(
+  //         "https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=70ae403dedd8f258ee457633ea3cfa6a"));
+  //     if (res.statusCode == 200) {
+  //       WeatherModel weatherModel=WeatherModel.fromJson(json.decode(res.body));
+  //       return weatherModel;
+  //
+  //     }
+  //     else
+  //     {
+  //       print("Failed .....");
+  //     }
+  //   } catch (e) {
+  //     print(e.toString());
+  //   }
+  //   return null;
+  // }
   Future<CityWeatherModel?> getCityWeather(String cityname) async{
     try{
       var res=await http.get(Uri.parse("http://api.weatherapi.com/v1/current.json?key=d771530ea2c04342a4a114808240807&q=${cityname}"));
