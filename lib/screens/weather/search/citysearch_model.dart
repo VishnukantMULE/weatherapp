@@ -6,4 +6,5 @@ class CitysearchModel{
   late String searchCity;
   List<SearchCityModel> resultList = [];
 
+
 }

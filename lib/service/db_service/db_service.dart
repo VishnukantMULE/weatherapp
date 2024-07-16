@@ -8,9 +8,7 @@ class DbService{
   final _columndatetime='datetime';
 
 
-  DbService(){
-    openMyDatabase();
-  }
+
   Future<Database> openMyDatabase() async {
 
     final dbPath = await getDatabasesPath();
@@ -35,39 +33,34 @@ class DbService{
     return database;
   }
 
-  Future<Database> InsertDatainDB(String cityname, String datetime) async {
+  Future<void> insertDataInDB(String cityname, String datetime) async {
 
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, 'my_database.db');
+    final db=await openDatabase(path);
+    await db.insert(_table, {
+      _columncityName:cityname,
+      _columndatetime:datetime,
+    },);
+    print("Inserted Successfully: $cityname and $datetime");
 
+    final List<Map<String, dynamic>> checkData = await db.query(_table);
+    print("Data after insertion: $checkData");
 
-    final database = await openDatabase(
-      path,
-      version: 1,
-      onCreate: (db, version) async {
-        db.rawInsert(
-            'INSERT INTO recent_search ($_columncityName, $_columndatetime) VALUES (?, ?)',
-            [cityname, datetime]
-        );
-      },
-    );
-    print("Inserted Successfully $cityname and $datetime");
-    return database;
   }
 
 
-  // Future<List<Map<String,dynamic>>> fetchDatefromDB() async{
-  //
-  //   final dbPath = await getDatabasesPath();
-  //   final path = join(dbPath, 'my_database.db');
-  //
-  //   onCreate: (db, version) async {
-  //
-  //   }
-  //
-  //
-  //
-  // }
+  Future<List<Map<String, dynamic>>> fetchDatafromDB() async {
+    final dbPath = await getDatabasesPath();
+    final path = join(dbPath, 'my_database.db');
+    final db = await openDatabase(path);
+    // final tables = await db.rawQuery("SELECT name FROM sqlite_master WHERE type='table'");
+
+    final List<Map<String, dynamic>> maps = await db.query(_table);
+
+
+    return maps;
+  }
 
 
 }

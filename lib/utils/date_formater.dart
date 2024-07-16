@@ -49,4 +49,10 @@ class DateFormater {
     return dateis;
 
   }
+
+  DateTime stringToDateTime(String dateTime){
+
+     return DateFormat("yyyy-MM-dd HH:mm").parse(dateTime);
+  }
+
 }

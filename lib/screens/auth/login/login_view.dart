@@ -1,7 +1,7 @@
 // import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:weatherapp/screens/weather/home/weather_home_view.dart';
-import 'package:weatherapp/service/db_service/db_service.dart';
+
 
 import '../register/register_view.dart';
 
@@ -60,7 +60,7 @@ class _LoginViewState extends State<LoginView> {
               obscureText: true,
               // enableSuggestions: false,
               // autocorrect: false,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 hintText: "Enter Your Password",
               ),
@@ -71,11 +71,11 @@ class _LoginViewState extends State<LoginView> {
             ),
             Row(
               children: [
-                Text("Dont have an account ? please"),
+                const Text("Dont have an account ? please"),
                 TextButton(onPressed: ()
                 {
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>RegisterView()));
-                }, child: Text("Regiter"))
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>const RegisterView()));
+                }, child: const Text("Regiter"))
               ],
             ),
 
@@ -86,7 +86,7 @@ class _LoginViewState extends State<LoginView> {
             ElevatedButton(
               onPressed: () {
 
-                DbService();
+
 
                 Navigator.push(context, MaterialPageRoute(builder: (context)=>const WeatherHomeView(cityName: '',)));
                 // _controller.updateuserId(_useridcontroller.text);
@@ -100,17 +100,17 @@ class _LoginViewState extends State<LoginView> {
                 //
                 // }
               },
-              child: Text(
-                "Login",
-                style:
-                TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-              ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.deepPurpleAccent,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),
                   side: BorderSide(color: Colors.black),
                 ),
+              ),
+              child: const Text(
+                "Login",
+                style:
+                TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
               ),
             )
           ],

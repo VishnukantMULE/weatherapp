@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../models/get_city_weather.dart';
 import '../../../models/get_ip_geolocation.dart';
-import '../../../models/get_search_city.dart';
 import '../../../models/get_tip.dart';
 import '../../../models/get_weather.dart';
 import '../../../service/api_services.dart';
